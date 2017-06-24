@@ -12,7 +12,7 @@ func main() {
 
 	args := config.ParseArgs()
 
-	db.InitDB()
+	db.InitDB(args.Service)
 
 	n := config.InitRouter()
 
