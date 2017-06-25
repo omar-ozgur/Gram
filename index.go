@@ -9,7 +9,6 @@ import (
 )
 
 func main() {
-
 	args := config.ParseArgs()
 
 	db.InitDB(args.Service)

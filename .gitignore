@@ -25,5 +25,8 @@ _testmain.go
 
 *.DS_Store
 
-#compiled executable gram
+# Compiled executable gram
 gram
+
+# JSON
+*.json

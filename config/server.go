@@ -2,6 +2,7 @@ package config
 
 import (
 	"flag"
+	"github.com/omar-ozgur/gram/utilities"
 	"os"
 )
 
@@ -11,13 +12,11 @@ type Args struct {
 }
 
 func GetPort() string {
-	defaultPort := "3000"
-
 	port := os.Getenv("GRAM_PORT")
 
 	// Set default port if there is nothing in the environment
 	if port == "" {
-		port = defaultPort
+		port = utilities.DefaultPort
 	}
 
 	return port
