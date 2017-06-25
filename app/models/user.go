@@ -24,7 +24,7 @@ type User struct {
 	Time_created time.Time `valid:"-"`
 }
 
-const userTableName = "users"
+var UserTableName string
 
 var UserAutoParams = map[string]bool{"Id": true, "Time_created": true}
 var UserUniqueParams = map[string]bool{"Email": true}
@@ -69,7 +69,7 @@ func CreateUser(user User) (status string, message string, createdUser User) {
 
 	// Create query string
 	var queryStr bytes.Buffer
-	queryStr.WriteString(fmt.Sprintf("INSERT INTO %s (", userTableName))
+	queryStr.WriteString(fmt.Sprintf("INSERT INTO %s (", UserTableName))
 
 	// Set present column names
 	var fieldsStr, valuesStr bytes.Buffer
@@ -129,7 +129,7 @@ func LoginUser(user User) (status string, message string, createdToken string) {
 
 	// Find user by email
 	var foundUser User
-	queryStr := fmt.Sprintf("SELECT * FROM %s WHERE email=$1;", userTableName)
+	queryStr := fmt.Sprintf("SELECT * FROM %s WHERE email=$1;", UserTableName)
 	utilities.Sugar.Infof("SQL Query: %s", queryStr)
 	utilities.Sugar.Infof("Values: %v", user.Email)
 	stmt, err := db.DB.Prepare(queryStr)
@@ -167,7 +167,7 @@ func LoginUser(user User) (status string, message string, createdToken string) {
 func GetUser(id string) (status string, message string, retrievedUser User) {
 
 	// Create and execute query
-	queryStr := fmt.Sprintf("SELECT * FROM %s WHERE id=$1;", userTableName)
+	queryStr := fmt.Sprintf("SELECT * FROM %s WHERE id=$1;", UserTableName)
 	utilities.Sugar.Infof("SQL Query: %s", queryStr)
 	utilities.Sugar.Infof("Values: %v", id)
 	stmt, err := db.DB.Prepare(queryStr)
@@ -189,7 +189,7 @@ func GetUser(id string) (status string, message string, retrievedUser User) {
 func GetUsers() (status string, message string, retrievedUsers []User) {
 
 	// Create and execute query
-	queryStr := fmt.Sprintf("SELECT * FROM %s;", userTableName)
+	queryStr := fmt.Sprintf("SELECT * FROM %s;", UserTableName)
 	utilities.Sugar.Infof("SQL Query: %s", queryStr)
 	rows, err := db.DB.Query(queryStr)
 	if err != nil {
@@ -238,7 +238,7 @@ func UpdateUser(id string, user User) (status string, message string, updatedUse
 
 	// Create query string
 	var queryStr bytes.Buffer
-	queryStr.WriteString(fmt.Sprintf("UPDATE %s SET", userTableName))
+	queryStr.WriteString(fmt.Sprintf("UPDATE %s SET", UserTableName))
 
 	// Set present column names and values
 	var values []interface{}
@@ -301,7 +301,7 @@ func UpdateUser(id string, user User) (status string, message string, updatedUse
 func DeleteUser(id string) (status string, message string) {
 
 	// Create and execute query
-	queryStr := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", userTableName)
+	queryStr := fmt.Sprintf("DELETE FROM %s WHERE id=$1;", UserTableName)
 	utilities.Sugar.Infof("SQL Query: %s", queryStr)
 	utilities.Sugar.Infof("Values: %v", id)
 	stmt, err := db.DB.Prepare(queryStr)
@@ -322,7 +322,7 @@ func SearchUsers(parameters map[string]interface{}, operator string) (status str
 	var queryStr bytes.Buffer
 
 	// Create and execute query
-	queryStr.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", userTableName))
+	queryStr.WriteString(fmt.Sprintf("SELECT * FROM %s WHERE", UserTableName))
 
 	// Set present column names and values
 	var values []interface{}

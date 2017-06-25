@@ -6,13 +6,6 @@ import (
 	"os"
 )
 
-type Arguments struct {
-	Port    string
-	Service string
-}
-
-var Args Arguments
-
 func GetPort() string {
 	port := os.Getenv("GRAM_PORT")
 
@@ -24,11 +17,9 @@ func GetPort() string {
 	return port
 }
 
-func ParseArgs() *Arguments {
-	flag.StringVar(&Args.Port, "port", GetPort(), "Specifies the port for the server to run on. Ex: --port 3000")
-	flag.StringVar(&Args.Service, "service", utilities.DefaultService, "Specifies the name of the service that the authentication server is being used for. Gram supports users for multiple services. Ex: --service MY_SERVICE")
+func ParseArgs() {
+	flag.StringVar(&utilities.Port, "port", GetPort(), "Specifies the port for the server to run on. Ex: --port 3000")
+	flag.StringVar(&utilities.Service, "service", utilities.DefaultService, "Specifies the name of the service that the authentication server is being used for. Gram supports users for multiple services. Ex: --service MY_SERVICE")
 
 	flag.Parse()
-
-	return &Args
 }

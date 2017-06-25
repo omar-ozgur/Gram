@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/omar-ozgur/gram/app/models"
 	"github.com/omar-ozgur/gram/config"
 	"github.com/omar-ozgur/gram/db"
 	"github.com/omar-ozgur/gram/utilities"
@@ -9,14 +10,16 @@ import (
 )
 
 func main() {
-	args := config.ParseArgs()
+	config.ParseArgs()
 
-	db.InitDB(args.Service)
+	db.InitDB()
+
+	models.Init()
 
 	n := config.InitRouter()
 
-	utilities.Sugar.Infof("Started server on port %s\n", args.Port)
-	err := http.ListenAndServe(fmt.Sprintf(":%s", args.Port), n)
+	utilities.Sugar.Infof("Started server on port %s\n", utilities.Port)
+	err := http.ListenAndServe(fmt.Sprintf(":%s", utilities.Port), n)
 	if err != nil {
 		utilities.Logger.Fatal(err.Error())
 	}

@@ -148,7 +148,7 @@ func FindDBInfo(dbParams *DBParams) {
 		dbParams.User, string(plainPassword), dbParams.Name, dbParams.Host)
 }
 
-func InitDB(service string) {
+func InitDB() {
 	var dbParams DBParams
 
 	data, err := ioutil.ReadFile("config/dbParams.json")
@@ -168,6 +168,8 @@ func InitDB(service string) {
 	if err != nil {
 		panic(fmt.Sprintf("Error: An error occurred while opening the SQL database\n%v", err))
 	}
+
+	service := utilities.Service
 
 	_, err = DB.Exec(fmt.Sprintf("SELECT * FROM %s", service))
 	if err != nil {
