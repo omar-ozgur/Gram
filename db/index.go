@@ -169,17 +169,16 @@ func InitDB(service string) {
 		panic(fmt.Sprintf("Error: An error occurred while opening the SQL database\n%v", err))
 	}
 
-	_, err = DB.Exec("SELECT * FROM users")
+	_, err = DB.Exec(fmt.Sprintf("SELECT * FROM %s", service))
 	if err != nil {
-		_, err = DB.Exec(`CREATE TABLE users (
+		_, err = DB.Exec(fmt.Sprintf(`CREATE TABLE %s (
            id SERIAL,
            first_name text,
            last_name text,
            email text,
-           fb_id text,
            password bytea,
            time_created timestamp DEFAULT now()
-           );`)
+           );`, service))
 		utilities.CheckErr(err)
 	}
 	utilities.CheckErr(err)
