@@ -73,11 +73,13 @@ func InitDB(service string) {
 	var dbParams DBParams
 
 	data, err := ioutil.ReadFile("config/dbParams.json")
-	if err != nil {
+	if err == nil {
 		json.Unmarshal(data, &dbParams)
 	}
 
-	FindDBInfo(&dbParams)
+	if dbParams.Info == "" {
+		FindDBInfo(&dbParams)
+	}
 
 	json, err := json.Marshal(dbParams)
 	utilities.CheckErr(err)
