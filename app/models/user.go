@@ -20,7 +20,6 @@ type User struct {
 	First_name   string    `valid:"required"`
 	Last_name    string    `valid:"required"`
 	Email        string    `valid:"email,required"`
-	Fb_id        string    `valid:"-"`
 	Password     []byte    `valid:"required"`
 	Time_created time.Time `valid:"-"`
 }
@@ -28,8 +27,8 @@ type User struct {
 const userTableName = "users"
 
 var UserAutoParams = map[string]bool{"Id": true, "Time_created": true}
-var UserUniqueParams = map[string]bool{"Email": true, "Fb_id": true}
-var UserRequiredParams = map[string]bool{"First_name": true, "Last_name": true, "Email": true, "Fb_id": true, "Password": true}
+var UserUniqueParams = map[string]bool{"Email": true}
+var UserRequiredParams = map[string]bool{"First_name": true, "Last_name": true, "Email": true, "Password": true}
 
 func CreateUser(user User) (status string, message string, createdUser User) {
 
@@ -138,7 +137,7 @@ func LoginUser(user User) (status string, message string, createdToken string) {
 		return "error", fmt.Sprintf("Failed to prepare DB query: %s", err.Error()), ""
 	}
 	row := stmt.QueryRow(user.Email)
-	err = row.Scan(&foundUser.Id, &foundUser.First_name, &foundUser.Last_name, &foundUser.Email, &foundUser.Fb_id, &foundUser.Password, &foundUser.Time_created)
+	err = row.Scan(&foundUser.Id, &foundUser.First_name, &foundUser.Last_name, &foundUser.Email, &foundUser.Password, &foundUser.Time_created)
 	if err != nil {
 		return "error", "Error while retrieving user", ""
 	}
@@ -179,7 +178,7 @@ func GetUser(id string) (status string, message string, retrievedUser User) {
 
 	// Get user info
 	var user User
-	err = row.Scan(&user.Id, &user.First_name, &user.Last_name, &user.Email, &user.Fb_id, &user.Password, &user.Time_created)
+	err = row.Scan(&user.Id, &user.First_name, &user.Last_name, &user.Email, &user.Password, &user.Time_created)
 	if err != nil {
 		return "error", "Failed to retrieve user information", User{}
 	}
@@ -201,7 +200,7 @@ func GetUsers() (status string, message string, retrievedUsers []User) {
 	var users []User
 	for rows.Next() {
 		var user User
-		err = rows.Scan(&user.Id, &user.First_name, &user.Last_name, &user.Email, &user.Fb_id, &user.Password, &user.Time_created)
+		err = rows.Scan(&user.Id, &user.First_name, &user.Last_name, &user.Email, &user.Password, &user.Time_created)
 		if err != nil {
 			return "error", "Failed to retrieve user information", nil
 		}
@@ -358,7 +357,7 @@ func SearchUsers(parameters map[string]interface{}, operator string) (status str
 	var users []User
 	for rows.Next() {
 		var user User
-		err = rows.Scan(&user.Id, &user.First_name, &user.Last_name, &user.Email, &user.Fb_id, &user.Password, &user.Time_created)
+		err = rows.Scan(&user.Id, &user.First_name, &user.Last_name, &user.Email, &user.Password, &user.Time_created)
 		if err != nil {
 			return "error", "Failed to retrieve user information", nil
 		}

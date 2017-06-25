@@ -164,7 +164,7 @@ func InitDB(service string) {
 	err = ioutil.WriteFile("config/dbParams.json", json, 0644)
 	utilities.CheckErr(err)
 
-	DB, err := sql.Open("postgres", DBInfo)
+	DB, err = sql.Open("postgres", DBInfo)
 	if err != nil {
 		panic(fmt.Sprintf("Error: An error occurred while opening the SQL database\n%v", err))
 	}
