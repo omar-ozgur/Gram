@@ -154,7 +154,7 @@ func LoginUser(user User) (status string, message string, createdToken string) {
 	}
 
 	// Create jwt token
-	var secretKey = []byte(os.Getenv("FLOCK_TOKEN_SECRET"))
+	var secretKey = []byte(os.Getenv("GRAM_TOKEN_SECRET"))
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["user_id"] = foundUser.Id
